@@ -20,21 +20,21 @@ export function KpiCard({
     return (
         <Card
             className={cn(
-                "bg-zinc-900/80 text-zinc-100 backdrop-blur",
+                "bg-zinc-950/35 text-zinc-100 ring-1 ring-white/10 backdrop-blur-xl border-none",
                 variant === "danger" &&
-                "border-red-500/40 bg-gradient-to-r from-red-600/30 to-red-500/20"
+                "ring-red-500/30 bg-red-950/20"
             )}
         >
-            <CardContent className="flex items-center justify-between p-4">
-                <div>
+            <CardContent className="flex items-center justify-between px-4 py-3">
+                <div className="min-w-0">
                     <div className="text-sm text-zinc-400">{title}</div>
-                    <div className="mt-1 text-3xl font-semibold">{value}</div>
+                    <div className="mt-1 text-3xl font-semibold tracking-tight">{value}</div>
                     {subtitle && (
-                        <div className="mt-1 text-xs text-zinc-400">{subtitle}</div>
+                        <div className="mt-1 text-sm text-zinc-500">{subtitle}</div>
                     )}
                 </div>
 
-                {right && <div>{right}</div>}
+                {right && <div className="shrink-0">{right}</div>}
             </CardContent>
         </Card>
     )
