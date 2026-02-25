@@ -8,7 +8,7 @@ type Props = {
 }
 
 function formatDateShort(dateISO: string) {
-    const [y, m, d] = dateISO.split("-")
+    const [, m, d] = dateISO.split("-")
     return `${d}/${m}`
 }
 

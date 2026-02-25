@@ -40,7 +40,7 @@ export function OpsPanel({
 }: Props) {
     const [tab, setTab] = useState<Tab>(defaultTab)
 
-    const { todayISO, tomorrowISO } = useMemo(() => {
+    const { tomorrowISO } = useMemo(() => {
         const now = new Date()
         const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
         const tomorrow = new Date(today)
@@ -56,7 +56,7 @@ export function OpsPanel({
     const lastNightVisible = useMemo(() => lastNight.slice(0, 6), [lastNight])
 
     return (
-        <Card className="bg-zinc-950/35 ring-1 ring-white/10 backdrop-blur-xl text-zinc-100 h-full flex flex-col min-h-0">
+        <Card className="bg-zinc-950/35 ring-1 ring-white/10 backdrop-blur-xl text-zinc-100 h-full flex flex-col min-h-0 pr-2">
             <CardHeader className="pb-2 shrink-0 flex flex-row items-center justify-between">
                 <div className="min-w-0">
                     <CardTitle className="text-[15px] font-semibold tracking-tight">Ops</CardTitle>
