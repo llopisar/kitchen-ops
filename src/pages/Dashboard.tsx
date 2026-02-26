@@ -34,7 +34,6 @@ export default function Dashboard() {
         nextGroupSubtitle,
     } = useMorningBrief()
 
-    // You can keep this minimal or remove it later
     if (loading && !breakfastTomorrow) {
         return (
             <AppShell>
@@ -64,13 +63,12 @@ export default function Dashboard() {
         )
     }
 
-    // breakfastTomorrow can be null briefly; guard for safety
     if (!breakfastTomorrow) return null
 
     return (
         <AppShell>
             <div className="h-full min-h-0 flex flex-col">
-                {/* ===== Premium Header ===== */}
+                {/* ===== Header ===== */}
                 <div className="shrink-0 mb-4 flex items-start justify-between">
                     <div>
                         <div className="text-xs font-medium text-zinc-500 tracking-[0.14em] uppercase">
@@ -82,6 +80,7 @@ export default function Dashboard() {
                         <div className="mt-1 text-sm text-zinc-400">{headerDate}</div>
                     </div>
 
+                    {/* Brand / location */}
                     <div className="flex items-center gap-3 rounded-xl bg-white/5 px-4 py-2 ring-1 ring-white/10">
                         <div className="grid h-7 w-7 place-items-center rounded-full bg-white/10 ring-1 ring-white/10">
                             <span className="text-xs font-semibold tracking-tight text-zinc-100">KO</span>
@@ -93,50 +92,98 @@ export default function Dashboard() {
                     </div>
                 </div>
 
-                {/* Row 1: KPIs */}
-                <div className="shrink-0 grid gap-3 md:grid-cols-4">
-                    <KpiCard title="Covers today" value={coversToday} subtitle="Total pax" />
+                {/* =========================
+            MOBILE (condensed)
+            ========================= */}
+                <div className="md:hidden flex-1 min-h-0 overflow-auto space-y-3">
+                    {/* KPIs (2 cols on mobile) */}
+                    <div className="grid grid-cols-2 gap-3">
+                        <KpiCard title="Covers today" value={coversToday} subtitle="Total pax" />
 
-                    <KpiCard
-                        title="Tables 8+"
-                        value={tables8PlusCount}
-                        subtitle={`${tables8PlusPax} pax total`}
-                    />
+                        <KpiCard
+                            title="Tables 8+"
+                            value={tables8PlusCount}
+                            subtitle={`${tables8PlusPax} pax total`}
+                        />
 
-                    <KpiCard
-                        title="Breakfast tomorrow"
-                        value={breakfastTomorrow.totalPax}
-                        subtitle="Total pax"
-                    />
+                        <KpiCard
+                            title="Breakfast tomorrow"
+                            value={breakfastTomorrow.totalPax}
+                            subtitle="Total pax"
+                        />
 
-                    <KpiCard title="Next group" value={nextGroupValue} subtitle={nextGroupSubtitle} />
-                </div>
-
-                {/* Rows 2 + 3 area (fills remaining height) */}
-                <div className="mt-4 flex-1 min-h-0 flex flex-col gap-4">
-                    {/* Row 2: Planning */}
-                    <div className="grid gap-4 md:grid-cols-5 items-stretch min-h-0">
-                        <div className="md:col-span-2 min-w-0 min-h-0">
-                            <UpcomingGroupsPanel items={upcomingGroups} limit={4} />
-                        </div>
-
-                        <div className="md:col-span-2 min-w-0 min-h-0">
-                            <BreakfastTomorrowPanel data={breakfastTomorrow} />
-                        </div>
-
-                        <div className="md:col-span-1 min-w-0 min-h-0">
-                            <NextReservationsPanel lunch={lunchNext} dinner={dinnerNext} limit={3} />
-                        </div>
+                        <KpiCard title="Next group" value={nextGroupValue} subtitle={nextGroupSubtitle} />
                     </div>
 
-                    {/* Row 3: Ops (tabs) */}
-                    <div className="min-h-0">
+                    {/* Dominant */}
+                    <BreakfastTomorrowPanel data={breakfastTomorrow} />
+
+                    {/* Actionable */}
+                    <NextReservationsPanel lunch={lunchNext} dinner={dinnerNext} limit={3} />
+
+                    {/* Context */}
+                    <UpcomingGroupsPanel items={upcomingGroups} limit={4} />
+
+                    {/* Ops */}
+                    <div className="min-h-[320px]">
                         <OpsPanel
                             tasks={supplierTasks}
                             onUpdateStatus={updateSupplierStatus}
                             lastNight={lastNight}
                             defaultTab="suppliers"
                         />
+                    </div>
+                </div>
+
+                {/* =========================
+            TABLET / DESKTOP (your current layout)
+            ========================= */}
+                <div className="hidden md:flex mt-0 flex-1 min-h-0 flex-col gap-4">
+                    {/* Row 1: KPIs */}
+                    <div className="shrink-0 grid gap-3 md:grid-cols-4">
+                        <KpiCard title="Covers today" value={coversToday} subtitle="Total pax" />
+
+                        <KpiCard
+                            title="Tables 8+"
+                            value={tables8PlusCount}
+                            subtitle={`${tables8PlusPax} pax total`}
+                        />
+
+                        <KpiCard
+                            title="Breakfast tomorrow"
+                            value={breakfastTomorrow.totalPax}
+                            subtitle="Total pax"
+                        />
+
+                        <KpiCard title="Next group" value={nextGroupValue} subtitle={nextGroupSubtitle} />
+                    </div>
+
+                    {/* Rows 2 + 3 area */}
+                    <div className="flex-1 min-h-0 flex flex-col gap-4">
+                        {/* Row 2: Planning */}
+                        <div className="grid gap-4 md:grid-cols-5 items-stretch min-h-0">
+                            <div className="md:col-span-2 min-w-0 min-h-0">
+                                <UpcomingGroupsPanel items={upcomingGroups} limit={4} />
+                            </div>
+
+                            <div className="md:col-span-2 min-w-0 min-h-0">
+                                <BreakfastTomorrowPanel data={breakfastTomorrow} />
+                            </div>
+
+                            <div className="md:col-span-1 min-w-0 min-h-0">
+                                <NextReservationsPanel lunch={lunchNext} dinner={dinnerNext} limit={3} />
+                            </div>
+                        </div>
+
+                        {/* Row 3: Ops */}
+                        <div className="min-h-0">
+                            <OpsPanel
+                                tasks={supplierTasks}
+                                onUpdateStatus={updateSupplierStatus}
+                                lastNight={lastNight}
+                                defaultTab="suppliers"
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
